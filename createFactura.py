@@ -11,24 +11,6 @@ SIIGO_USERNAME = "facturas@palomma.com"
 SIIGO_ACCESS_KEY = "OGExNzM4ZjUtZWNkNC00NGNkLWJiMzQtNzA5MDc2M2QzODI0OjF7eVVpN2RDZlk="
 SELLER_ID = 570
 
-# Aplicar la conversión antes de enviar el payloa
-def correct_decimal(value):
-    """
-    If the decimal part of a float ends in '49', change it to '50', regardless of the number of decimal places.
-    
-    :param value: A float number to be checked and corrected.
-    :return: The corrected float value.
-    """
-    value_str = str(value)  # Convert to string, remove trailing zeros for precision
-
-    integer_part, _, decimal_part = value_str.partition(".")  # Split into integer and decimal parts
-
-    if decimal_part.endswith("49"):
-        # Adjust the last two digits from '49' to '50'
-        corrected_decimal_part = decimal_part[:-2] + "50"
-        corrected_value_str = f"{integer_part}.{corrected_decimal_part}"
-        return float(corrected_value_str)  # Convert back to float
-    return value
 
 # Función para obtener el token de acceso
 def get_access_token():
@@ -65,19 +47,20 @@ def create_invoice(invoice_dict, data_inmobiliarias_df):
             price = item["price"]
             taxes = item.get("taxes", [])
             
-
             if len(taxes) == 1:  # Solo IVA
                 iva =  round(price*0.19,2)
                 total_value += round((price + iva) , 2)
             elif len(taxes) == 2:  # IVA y Retefuente
-                iva =  round(price*0.155,2)
-                total_value += round((price + iva),2)
+                iva =  round(price*0.19,2)
+                rtef = round(price*0.035,2)
+                total_value += round((price + iva - rtef),2)
             
             else:
                 total_value += round(price,2) #Esto se hace para los elementos que no tienen impuestos
-        
-        total = total_value
-        print(total)
+
+            print(total_value)
+
+        total = round(total_value,2)
         
         # Parámetros de la factura
         invoice_payload = {
@@ -108,6 +91,7 @@ def create_invoice(invoice_dict, data_inmobiliarias_df):
 
         pprint.pprint(invoice_payload, indent=2)
         
+        
         # Enviar la solicitud para crear la factura
         invoice_url = "https://api.siigo.com/v1/invoices"
         try:
@@ -122,5 +106,4 @@ def create_invoice(invoice_dict, data_inmobiliarias_df):
             print("Status Code:", e.response.status_code)
             print("Headers:", e.response.headers)
             print("Error Response:", e.response.text)
-        
             
