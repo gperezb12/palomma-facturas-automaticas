@@ -5,8 +5,8 @@ import pprint
 
 
 # Uso del método
-reporte_ventas_path = 'bd\\reportesVentas_Ene22a31.xlsx'
-data_inmobiliarias_path = 'bd\\dataInmobiliarias.xlsx'
+reporte_ventas_path = 'bd\\reportesVentas1a21ene.xlsx'
+data_inmobiliarias_path = 'bd\\dataInmobiliarias_sandbox.xlsx'
 
 invoice_data = generate_invoice_data(reporte_ventas_path, data_inmobiliarias_path)
 
