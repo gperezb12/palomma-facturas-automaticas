@@ -27,6 +27,9 @@ def generate_transactions_dict(rentals: pd.DataFrame) -> dict:
     return rentals['rentalsMerchantId'].value_counts().to_dict()
 
 
+
+
+
 rentalss  = "C:\\Users\\greg2\\Documents\\FacturacionAutomatica\\palomma-facturas-automaticas\\bd\\rentalsSettleEne.csv"
 rentals_df = Open_rentals(rentalss)
-print(generate_transactions_dict(rentals_df))
+transacciones = generate_transactions_dict(rentals_df)

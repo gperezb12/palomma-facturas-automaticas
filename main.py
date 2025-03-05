@@ -4,7 +4,7 @@ import pandas as pd
 import pprint
 
 
-# Uso del método
+# Uso del método CAMBIAR FILEPATH de reporteVentas 
 reporte_ventas_path = 'bd\\reportesVentas.xlsx'
 data_inmobiliarias_path = 'bd\\dataInmobiliarias_updatedFeb.xlsx'
 
